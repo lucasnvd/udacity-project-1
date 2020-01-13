@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PureComponent } from 'react';
 import './App.css';
 import logo from './logo.svg';
 
@@ -97,6 +97,31 @@ const movies = {
   },
 };
 
+class ProfilesList extends PureComponent {
+  mergeProfileData () {
+    return (
+      profiles.map(({favoriteMovieID, userID}) => {
+        const movie = movies[favoriteMovieID];
+        const user  = users[userID];
+        
+        return {movie, user};
+      })
+    );
+  }
+  
+  render () {
+    const profilesData = this.mergeProfileData();
+    return (
+      <ul> 
+      {profilesData.map(({movie, user}) => 
+        <li key={user.id}>
+          {user.name}'s favorite movie is {movie.name}.
+      	</li>)}
+      </ul>
+    );   
+  }
+}
+
 class App extends Component {
   render() {
     return (
@@ -106,6 +131,7 @@ class App extends Component {
           <h1 className="App-title">ReactND - Coding Practice</h1>
         </header>
         <h2>Favorite Movies</h2>
+        <ProfilesList/>
       </div>
     );
   }
